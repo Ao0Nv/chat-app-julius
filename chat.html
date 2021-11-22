@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<?php
+  header('Content-Type: text/html; charset=UTF-8');
+?>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="refresh" content="20" >
+    <link rel="icon" type="image/png" href="./Jchat.png">
+    
+    <title>ChatApp</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 16px Helvetica, Arial; background: #fffacd;}
+      h2 {padding: 10px}
+      .form { background: #ffd700; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+      .form input { border: 0; padding: 10px; width: 89%; margin-right: .5%; }
+      .form button { width: 9%; background: #f4a460; border: none; padding: 10px; }
+      ul { list-style-type: none; margin: 0; padding: 0; }
+      ul li { padding: 5px 10px; }
+      ul { margin-bottom: 10px }
+      object{background: #ffd700; float: right;}
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+  </head>
+  <body>
+    <header>
+      <h3><center>ユーザA</cecnter></h3>
+    </header>
+    <hr>
+    <main id="chat">
+        <p>メッセージ</p>
+        <!-- メッセージを"chat.txt"から持ってきて一行ずつ囲って表示する
+        <?php
+        echo 'aaaaa';
+
+          $filename = 'chat.txt';
+          $fp = fopen($filename, 'r' );
+          for($count=0; fgets($fp); $count++)
+          {
+            $s=fgets($fp);
+            $span = "<span style="background: #ffd700; float: right">$s</span>";
+            echo $span;
+          }
+          */
+        ?>
+        -->
+        <!-- <object data="chat.txt" type="text/plain"></object>   -->
+      <form class="form" action="./chat.php" method="post">
+        <input type="text" name="message" placeholder="メッセージを入力">
+        <!--  <input type="hidden" name = "date" value="date">  -->
+        <button type="submit">送信</button>
+      </form>
+    </main>
+  </body>
+
+  <script>
+    var date = new Date();
+    var socket = io();
+    var app = new Vue({
+      el: '#chat',
+      data: {
+        chatMessage: '',
+        messages: []
+      },
+      methods: {
+        postMessage: function() {
+          socket.emit('c2s-msg', this.chatMessage);
+          this.chatMessage = '';
+          return false;
+        }
+      },
+    })
+    socket.on('s2c-msg', function(msg) {
+      console.log(msg);
+      app.messages.push(msg);
+      window.scrollTo(0, document.body.scrollHeight);
+    });
+    socket.on('init-chat', function(messages) {
+      app.messages = messages;
+    });
+
+    function dispText() 
+    {
+        var text = document.formname.out_file.value + "\n";
+        var blob = new Blob([text], { "type": "text/plain" });
+
+      //IEの場合
+      if (window.navigator.msSaveBlob) 
+      {
+        window.navigator.msSaveBlob(blob, "chat.txt");
+        
+      } 
+      //IE以外の場合
+      else 
+      {
+        document.getElementById("createFile").href = window.URL.createObjectURL(blob);
+      }
+    }
+
+    //File file = new File("C:\Users\学校\卒業研究\chatapp\chat.txt");
+    //filewriter.write()
+  </script>
+</html>
