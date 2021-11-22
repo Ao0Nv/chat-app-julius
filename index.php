@@ -1,3 +1,3 @@
 <!-- index.php -->
 
-<?php include_once("chat.html"); ?>
+<?php include_once("index.html"); ?>
