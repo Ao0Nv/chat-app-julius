@@ -1,9 +1,0 @@
-*{ margin: 0; padding: 0; box-sizing: border-box; }  /*すべての要素*/
-body { font: 16px Helvetica, Arial; background: #fffacd;}
-h2 {padding: 10px}
-.form { background: #ffd700; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-.form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
-.form button { width: 9%; background: #f4a460; border: none; padding: 10px; }
-ul { list-style-type: none; margin: 0; padding: 0; }
-ul li { padding: 5px 10px; }
-ul { margin-bottom: 10px }
